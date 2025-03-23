@@ -6,4 +6,7 @@ def health():
         "model_loaded": model is not None
     }
     return jsonify(status), 200
-    
+    pip install torch
+pip install torch-geometric
+pip install flask
+pip install streamlit
