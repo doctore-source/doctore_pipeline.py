@@ -146,4 +146,30 @@ def run_scheduled_pipeline():
     conn = sqlite3.connect(db_name)
     game_results.to_sql("actual_results", conn, if_exists="append", index=False)
     conn.close()
+    def fetch_actual_results():
+    """
+    Fetches actual NBA game results from SportsDataIO API.
+    Returns a DataFrame with actual game results.
+    """
+    url = "https://api.sportsdata.io/v3/nba/scores/json/GamesByDate/2025-MAR-23"  # Replace date with dynamic fetching
+    headers = {'Ocp-Apim-Subscription-Key': 'YOUR_SPORTSDATAIO_API_KEY'}
     
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        results_data = []
+
+        for game in data:
+            if game['Status'] == 'Final':  # Only process completed games
+                results_data.append({
+                    "Team_A": game['HomeTeam'],
+                    "Team_B": game['AwayTeam'],
+                    "Actual_Winner": game['HomeTeam'] if game['HomeTeamScore'] > game['AwayTeamScore'] else game['AwayTeam']
+                })
+        
+        return pd.DataFrame(results_data)
+    else:
+        print(f"Failed to fetch actual results. Status Code: {response.status_code}")
+        return pd.DataFrame()
+        
