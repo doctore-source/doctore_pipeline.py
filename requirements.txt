@@ -1,6 +1,9 @@
+# Web Frameworks & Server
 flask
 gunicorn
 streamlit
+
+# Machine Learning & Data Processing
 pandas
 numpy
 scikit-learn
@@ -11,11 +14,15 @@ torch-geometric
 xgboost
 lightgbm
 catboost
+
+# Google Cloud APIs (If Needed)
 google-auth
 google-auth-oauthlib
 google-auth-httplib2
 google-api-python-client
 google-cloud-storage
+
+# Utility Packages
 fpdf
 requests
 schedule
