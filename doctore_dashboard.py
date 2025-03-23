@@ -91,4 +91,5 @@ else:
 
 if st.button("🔄 Refresh Data"):
     st.experimental_rerun()
+    streamlit run doctore_dashboard.py
     
