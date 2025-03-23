@@ -1,0 +1,31 @@
+conda env create -f environment.yml
+name: my_environment  # Change this to your desired environment name
+channels:
+  - defaults
+  - conda-forge  # Useful for some of the libraries like LightGBM or CatBoost
+dependencies:
+  - python=3.9  # Ensure you specify the Python version
+  - flask
+  - gunicorn
+  - streamlit
+  - pandas
+  - numpy
+  - scikit-learn
+  - joblib
+  - matplotlib
+  - torch
+  - pip  # Needed for pip-based installations
+  - pip:
+      - torch-geometric
+      - xgboost
+      - lightgbm
+      - catboost
+      - google-auth
+      - google-auth-oauthlib
+      - google-auth-httplib2
+      - google-api-python-client
+      - google-cloud-storage
+      - fpdf
+      - requests
+      - schedule
+conda activate my_environment
