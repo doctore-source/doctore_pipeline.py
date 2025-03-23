@@ -1,3 +1,4 @@
+nohup streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0 > dashboard_log.out 2>&1 &
 nohup streamlit run doctore_dashboard.py --server.port 8501 --server.address 0.0.0.0 > dashboard_log.out 2>&1 &
 
 
