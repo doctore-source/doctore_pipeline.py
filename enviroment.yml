@@ -1,3 +1,4 @@
+conda env create -f environment.yml
 name: my_environment  # Name of your environment
 channels:
   - defaults          # Conda channels to fetch packages from
