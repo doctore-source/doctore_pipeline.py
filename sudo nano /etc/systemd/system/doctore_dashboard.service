@@ -1,0 +1,14 @@
+[Unit]
+Description=Doctore NBA Odds Dashboard
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu
+ExecStart=/usr/bin/python3 /home/ubuntu/doctore_dashboard.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+sudo systemctl enable doctore_dashboard.service
+sudo systemctl start doctore_dashboard.service
