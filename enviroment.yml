@@ -1,0 +1,14 @@
+name: my_environment  # Name of your environment
+channels:
+  - defaults          # Conda channels to fetch packages from
+  - conda-forge        # Add other channels if needed
+dependencies:
+  - python=3.9        # Specify Python version
+  - numpy             # Essential libraries
+  - pandas
+  - matplotlib
+  - scipy
+  - scikit-learn      # Machine learning library
+  - pip               # Include pip if you need to install pip packages
+  - pip:
+      - some-pip-package>=1.2.3  # Pip-specific packages and versions
