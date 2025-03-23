@@ -1,10 +1,21 @@
- torch-geometric
- xgboost
- lightgbm
- catboost
--streamlit==1.25.0
--flask==2.2.2
--gunicorn==20.1.0
--# and so on...
-+pip3 install -r requirements.txt
-+
+streamlit
+flask
+gunicorn
+fpdf
+requests
+schedule
+pandas
+numpy
+scikit-learn
+joblib
+matplotlib
+torch
+torch-geometric
+xgboost
+lightgbm
+catboost
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+google-cloud-storage
