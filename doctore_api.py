@@ -1,80 +1,29 @@
 from flask import Flask, request, jsonify
-import pandas as pd
-import numpy as np
 import joblib
-import os
-import logging
+import torch
+import numpy as np
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler("doctore_api.log"),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
-
-# Initialize Flask app
 app = Flask(__name__)
 
-# Load the model - use absolute path for systemd service
-try:
-    # Get the absolute directory of the current file
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    model_path = os.path.join(current_dir, 'models', 'doctore_model.pkl')
-    logger.info(f"Attempting to load model from: {model_path}")
-    
-    model = joblib.load(model_path)
-    logger.info("Model loaded successfully")
-except Exception as e:
-    logger.error(f"Error loading model: {e}")
-    model = None
+# Load your trained model (adjust the path as needed)
+model = joblib.load('path_to_your_model.pkl')
 
-@app.route('/api/predict', methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
     try:
         data = request.json
-        logger.info(f"Received prediction request: {data}")
+        # Assuming you have a model that takes JSON input
+        input_data = np.array(data['features'])
         
-        # Process input data
-        input_df = pd.DataFrame(data['features'])
+        # Make prediction (adjust based on your model’s requirements)
+        prediction = model.predict(input_data.reshape(1, -1))
         
-        if model is None:
-            logger.error("Model not loaded, cannot make prediction")
-            return jsonify({
-                'status': 'error',
-                'message': 'Model not loaded'
-            }), 500
-        
-        # Make prediction
-        predictions = model.predict(input_df)
-        
-        logger.info(f"Prediction successful: {predictions[:5]}")
-        return jsonify({
-            'status': 'success',
-            'predictions': predictions.tolist()
-        })
+        response = {
+            'prediction': prediction.tolist()
+        }
+        return jsonify(response)
     except Exception as e:
-        logger.error(f"Error in prediction: {e}")
-        return jsonify({
-            'status': 'error',
-            'message': str(e)
-        }), 500
-
-@app.route('/api/health', methods=['GET'])
-def health_check():
-    model_status = "loaded" if model is not None else "not loaded"
-    logger.info(f"Health check called. Model status: {model_status}")
-    return jsonify({
-        'status': 'healthy', 
-        'model_status': model_status
-    })
+        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    logger.info("Starting Doctore API in standalone mode")
-    app.run(host='0.0.0.0', port=5000, debug=False)
-else:
-    logger.info("Doctore API imported as module (for Gunicorn)")
-    
+    app.run(host='0.0.0.0', port=5000)
