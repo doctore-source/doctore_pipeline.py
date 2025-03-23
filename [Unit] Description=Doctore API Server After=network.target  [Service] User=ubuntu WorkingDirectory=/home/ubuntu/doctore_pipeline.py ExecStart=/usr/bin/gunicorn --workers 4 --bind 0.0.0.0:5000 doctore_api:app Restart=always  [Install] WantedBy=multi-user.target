@@ -1,3 +1,7 @@
+sudo systemctl enable doctore_api.service
+sudo systemctl start doctore_api.service
+sudo systemctl status doctore_api.service
+
 [Unit]
 Description=Doctore API Server
 After=network.target
