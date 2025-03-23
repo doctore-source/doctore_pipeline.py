@@ -1,2 +1,1 @@
 scp -i "YOUR_KEY.pem" *.py ubuntu@YOUR_SERVER_IP:/home/ubuntu/
-scp -i "YOUR_KEY.pem" predictions.db ubuntu@YOUR_SERVER_IP:/home/ubuntu/
