@@ -67,4 +67,5 @@ else:
 if st.button("🔄 Refresh Data"):
     df = load_data()
     st.experimental_rerun()
+    streamlit run doctore_dashboard.py
     
