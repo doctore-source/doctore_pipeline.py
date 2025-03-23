@@ -1,1 +1,2 @@
 predictions.db
+python3 retrain_monitor.py
