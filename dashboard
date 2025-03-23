@@ -1,0 +1,2 @@
+cd repository-name
+git checkout -b my-feature-branch
