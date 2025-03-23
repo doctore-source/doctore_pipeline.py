@@ -1,3 +1,4 @@
+python3 doctore_api.py
 gunicorn --workers 4 --bind 0.0.0.0:5000 doctore_api:app
 import logging
 
