@@ -18,3 +18,4 @@ WantedBy=multi-user.target
 sudo systemctl enable doctore_api.service
 sudo systemctl start doctore_api.service
 sudo systemctl status doctore_api.service
+nohup streamlit run streamlit_app.py --server.port 8501 --server.address 0.0.0.0 > dashboard_log.out 2>&1 &
