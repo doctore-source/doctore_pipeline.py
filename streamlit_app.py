@@ -1,4 +1,5 @@
-import streamlit as st
+scp -i "YOUR_KEY.pem" *.py predictions.db requirements.txt ubuntu@YOUR_SERVER_IP:/home/ubuntu/
+ streamlit as st
 import pandas as pd
 
 st.title("Doctore: NBA Betting Analysis")
