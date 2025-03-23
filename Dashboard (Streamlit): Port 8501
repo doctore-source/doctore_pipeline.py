@@ -1,3 +1,28 @@
+# Prediction Page
+elif page == "Prediction":
+    st.title("Make a Prediction")
+    st.markdown("### Enter your features below to get a prediction")
+
+    # User input
+    feature_values = st.text_input("Enter feature values separated by commas (e.g., 1, 2, 3, 4, 5)", "")
+    
+    if st.button("Predict"):
+        if feature_values:
+            try:
+                features = [float(x.strip()) for x in feature_values.split(",")]
+                data = {"features": features}
+                
+                response = requests.post(API_URL, json=data)
+                
+                if response.status_code == 200:
+                    prediction = response.json().get("prediction", "No prediction found.")
+                    st.success(f"Prediction: {prediction}")
+                else:
+                    st.error(f"Error: {response.json().get('error', 'An error occurred.')}")
+            except Exception as e:
+                st.error(f"Error parsing input: {e}")
+        else:
+            st.warning("Please enter feature values.")
 sudo ufw allow OpenSSH
 sudo ufw allow 8501
 sudo ufw allow 5000
