@@ -40,4 +40,34 @@ def fetch_real_nba_data():
     else:
         print(f"Failed to fetch NBA data. Status Code: {response.status_code}")
         return pd.DataFrame()
+        def fetch_real_betting_odds():
+    """
+    Fetches live betting odds from TheOddsAPI (Replace with your API Key).
+    Returns a DataFrame with processed data.
+    """
+    url = "https://api.the-odds-api.com/v4/sports/basketball_nba/odds"
+    params = {
+        'apiKey': 'YOUR_ODDS_API_KEY',
+        'regions': 'us',
+        'markets': 'h2h',
+        'oddsFormat': 'decimal'
+    }
+    
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        
+        odds_data = []
+        for event in data:
+            odds_data.append({
+                "Team_A": event['home_team'],
+                "Team_B": event['away_team'],
+                "Bookmaker_Odds_Team_A": event['bookmakers'][0]['markets'][0]['outcomes'][0]['price'],
+                "Bookmaker_Odds_Team_B": event['bookmakers'][0]['markets'][0]['outcomes'][1]['price']
+            })
+        
+        return pd.DataFrame(odds_data)
+    else:
+        print(f"Failed to fetch odds data. Status Code: {response.status_code}")
+        return pd.DataFrame()
         
