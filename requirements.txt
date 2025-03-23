@@ -1,7 +1,7 @@
-name: my_environment  # Change this to your desired environment name
+name: my_environment  # Specify your desired environment name
 channels:
   - defaults
-  - conda-forge  # Useful for some of the libraries like LightGBM or CatBoost
+  - conda-forge  # Useful for some libraries, e.g., LightGBM or CatBoost
 dependencies:
   - python=3.9  # Ensure you specify the Python version
   - flask
@@ -13,7 +13,7 @@ dependencies:
   - joblib
   - matplotlib
   - torch
-  - pip  # Needed for pip-based installations
+  - pip  # Required for pip-based installations
   - pip:
       - torch-geometric
       - xgboost
