@@ -14,3 +14,8 @@ torch-geometric
 xgboost
 lightgbm
 catboost
+streamlit
+requests
+matplotlib
+pandas
+numpy
