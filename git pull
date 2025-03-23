@@ -1,0 +1,29 @@
+sqlite3
+# Web Frameworks & Server
+flask
+gunicorn
+streamlit
+
+# Machine Learning & Data Processing
+pandas
+numpy
+scikit-learn
+joblib
+matplotlib
+torch
+torch-geometric
+xgboost
+lightgbm
+catboost
+
+# Google Cloud APIs (If you're using them)
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+google-cloud-storage
+
+# Utility Packages
+fpdf
+requests
+schedule
