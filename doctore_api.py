@@ -2,42 +2,24 @@ from flask import Flask, request, jsonify
 import torch
 import joblib
 import pandas as pd
-from gnn_model import GNNModel
-from lstm_model import LSTMModel
+from hybrid_model import HybridModel
 
 app = Flask(__name__)
 
-# Load models and scaler
-gnn_model = GNNModel(num_node_features=16, hidden_channels=32)
-gnn_model.load_state_dict(torch.load('gnn_model.pth'))
-gnn_model.eval()
+# Load Hybrid Model
+hybrid_model = HybridModel()
 
-lstm_model = LSTMModel(input_size=16, hidden_size=128, num_layers=2, output_size=1)
-lstm_model.load_state_dict(torch.load('lstm_model.pth'))
-lstm_model.eval()
-
-scaler = joblib.load('scaler.pkl')
-
-# Endpoint to make predictions
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
         data = request.json
         df = pd.DataFrame(data)
         
-        # Scale data
-        features = scaler.transform(df)
-        features_tensor = torch.tensor(features).float()
-        
-        # GNN Prediction
-        gnn_output = gnn_model(features_tensor).detach().numpy()
-        
-        # LSTM Prediction
-        lstm_output = lstm_model(features_tensor.unsqueeze(1)).detach().numpy()
+        # Make predictions using the Hybrid Model
+        predictions = hybrid_model.predict(df)
         
         response = {
-            "GNN_Prediction": gnn_output.tolist(),
-            "LSTM_Prediction": lstm_output.tolist()
+            "Hybrid_Predictions": predictions.tolist()
         }
         
         return jsonify(response), 200
