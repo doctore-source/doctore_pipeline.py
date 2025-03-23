@@ -1,38 +1,5 @@
-streamlit run doctore_dashboard.py
 from sklearn.ensemble import VotingClassifier
-
-def create_ensemble_model(X_train, y_train):
-    """
-    Creates an ensemble model combining XGBoost, LightGBM, and CatBoost.
-    """
-    xgb_model = tune_model(X_train, y_train, 'xgboost')
-    lgbm_model = tune_model(X_train, y_train, 'lightgbm')
-    catboost_model = tune_model(X_train, y_train, 'catboost')
-
-    ensemble_model = VotingClassifier(
-        estimators=[
-            ('xgboost', xgb_model),
-            ('lightgbm', lgbm_model),
-            ('catboost', catboost_model)
-        ],
-        voting='soft'
-    )
-    
-    ensemble_model.fit(X_train, y_train)
-    return ensemble_model
 import joblib
-joblib.dump(ensemble_model, 'enhanced_model.pkl')
-loaded_model = joblib.load('enhanced_model.pkl')
-
-
-    Runs the prediction pipeline at regular intervals (e.g., every 2 hours).
-    """
-    schedule.every(2).hours.do(full_prediction_pipeline)
-
-    while True:
-        schedule.run_pending()
-        time.sleep(60)
-        scp -i "YOUR_KEY.pem" *.py predictions.db requirements.txt ubuntu@YOUR_SERVER_IP:/home/ubuntu/
 import pandas as pd
 import numpy as np
 import requests
@@ -42,6 +9,102 @@ import sqlite3
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.ensemble import RandomForestClassifier
+
+# ------------------ Function to Load Data from Database ------------------
+
+def load_data(db_name="predictions.db"):
+    """
+    Loads predictions from the SQLite database.
+    """
+    conn = sqlite3.connect(db_name)
+    predictions = pd.read_sql("SELECT * FROM predictions", conn)
+    actuals = pd.read_sql("SELECT * FROM actual_results", conn)
+    conn.close()
+    return predictions, actuals
+
+# ------------------ Calculate Success Rate & Profit Calculation ------------------
+
+def calculate_performance(predictions, actuals):
+    """
+    Calculates the success rate and profit/loss from predictions.
+    """
+    merged = predictions.merge(actuals, on=["Team_A", "Team_B"], how="inner")
+    
+    merged['Correct_Prediction'] = merged['Predicted_Winner'] == merged['Actual_Winner']
+    total_bets = len(merged)
+    correct_bets = merged['Correct_Prediction'].sum()
+    
+    # Calculate Success Rate
+    success_rate = correct_bets / total_bets if total_bets > 0 else 0
+
+    # Profit Calculation (Assuming 100€ per bet)
+    merged['Profit/Loss'] = merged.apply(
+        lambda row: 100 * (row['Bookmaker_Odds_Team_A'] - 1) if row['Correct_Prediction'] and row['Predicted_Winner'] == row['Team_A'] else
+                    100 * (row['Bookmaker_Odds_Team_B'] - 1) if row['Correct_Prediction'] and row['Predicted_Winner'] == row['Team_B'] else -100,
+        axis=1
+    )
+    
+    total_profit = merged['Profit/Loss'].sum()
+    return success_rate, total_profit, merged
+
+# ------------------ Streamlit Dashboard Interface ------------------
+
+st.set_page_config(page_title="Doctore NBA Odds Calculator Dashboard", layout="wide")
+
+# Title
+st.title("📊 Doctore NBA Odds Calculator Dashboard")
+
+# Load data from the database
+predictions, actuals = load_data()
+
+if not predictions.empty:
+    # Show the raw predictions data
+    st.subheader("🔍 Predictions Data")
+    st.write(predictions)
+    
+    # Show actual results data
+    if not actuals.empty:
+        st.subheader("🏀 Actual Results Data")
+        st.write(actuals)
+        
+        # Calculate performance metrics
+        success_rate, total_profit, merged_df = calculate_performance(predictions, actuals)
+        
+        # Display performance metrics
+        st.subheader("📊 Performance Overview")
+        st.write(f"✅ Success Rate: {success_rate * 100:.2f}%")
+        st.write(f"💰 Total Profit/Loss: {total_profit} €")
+        
+        # Show Value Bets Only
+        st.subheader("💡 Value Bets")
+        value_bets = merged_df[(merged_df['Value_Bet_A'] == True) | (merged_df['Value_Bet_B'] == True)]
+        st.write(value_bets)
+        
+        # Plot: Profit/Loss per Game
+        st.subheader("📈 Profit/Loss Analysis")
+        profit_chart = alt.Chart(merged_df).mark_bar().encode(
+            x='Team_A:N',
+            y='Profit/Loss',
+            color='Correct_Prediction:N',
+            tooltip=['Team_A', 'Team_B', 'Profit/Loss']
+        ).interactive()
+        
+        st.altair_chart(profit_chart, use_container_width=True)
+        
+else:
+    st.write("No predictions available. Please run the prediction pipeline first.")
+
+# ------------------ Refresh Button ------------------
+
+if st.button("🔄 Refresh Data"):
+    st.experimental_rerun()
+
+def fetch_predictions():
+    response = requests.get("http://YOUR_SERVER_IP:5000/results")
+    if response.status_code == 200:
+        return response.json()['results']
+    else:
+        return None
 
 # ------------------ STEP 1: Fetching Data from APIs ------------------
 
@@ -70,7 +133,6 @@ def fetch_real_nba_data():
     else:
         print(f"Failed to fetch NBA data. Status Code: {response.status_code}")
         return pd.DataFrame()
-
 
 def fetch_real_betting_odds():
     """
@@ -173,14 +235,16 @@ def run_scheduled_pipeline():
     while True:
         schedule.run_pending()
         time.sleep(60)
-        def save_actual_results(game_results, db_name="predictions.db"):
+
+def save_actual_results(game_results, db_name="predictions.db"):
     """
     Save actual game results to the database for comparison with predictions.
     """
     conn = sqlite3.connect(db_name)
     game_results.to_sql("actual_results", conn, if_exists="append", index=False)
     conn.close()
-    def fetch_actual_results():
+
+def fetch_actual_results():
     """
     Fetches actual NBA game results from SportsDataIO API.
     Returns a DataFrame with actual game results.
@@ -206,5 +270,3 @@ def run_scheduled_pipeline():
     else:
         print(f"Failed to fetch actual results. Status Code: {response.status_code}")
         return pd.DataFrame()
-        python doctore_pipeline.py
-        
