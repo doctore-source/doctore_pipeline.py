@@ -1,0 +1,11 @@
+streamlit run doctore_dashboard.py --server.port 8501 --server.address 0.0.0.0 --server.maxUploadSize 10 --server.enableCORS false
+import streamlit as st
+@st.cache_resource
+def load_data():
+    # Your code to load predictions from the database
+    pass
+sudo apt-get update && sudo apt-get upgrade -y
+sudo ufw allow OpenSSH
+sudo ufw allow 8501  # Streamlit
+sudo ufw allow 5000  # Prediction API (to be created)
+sudo ufw enable
