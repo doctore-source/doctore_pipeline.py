@@ -139,4 +139,11 @@ def run_scheduled_pipeline():
     while True:
         schedule.run_pending()
         time.sleep(60)
-        
+        def save_actual_results(game_results, db_name="predictions.db"):
+    """
+    Save actual game results to the database for comparison with predictions.
+    """
+    conn = sqlite3.connect(db_name)
+    game_results.to_sql("actual_results", conn, if_exists="append", index=False)
+    conn.close()
+    
