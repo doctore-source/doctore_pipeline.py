@@ -1,0 +1,8 @@
+sudo ufw allow OpenSSH
+sudo ufw allow 8501
+sudo ufw allow 5000
+sudo ufw enable
+API (Flask/Gunicorn): Port 5000
+ssh -i "YOUR_KEY.pem" ubuntu@YOUR_SERVER_IP
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get install python3-pip -y
