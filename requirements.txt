@@ -6,3 +6,4 @@ altair
 requests
 scikit-learn
 schedule
+pip3 install streamlit pandas numpy scikit-learn requests schedule sqlite3 altair
