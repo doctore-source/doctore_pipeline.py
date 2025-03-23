@@ -19,3 +19,4 @@ st.title("Doctore:
 
 st.title("Welcome to Doctore!")
 st.write("This is where your custom content, data, and visuals will go.")
+git clone -b doctore-source-patch-1 https://github.com/doctore-source/doctore_pipeline.py.git
