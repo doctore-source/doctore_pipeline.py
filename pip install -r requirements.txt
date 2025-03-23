@@ -3,3 +3,6 @@ pip install flask
 pip install gunicorn
 pip install torch
 pip install torch-geometric
+python3 -m venv doctore-env
+source doctore-env/bin/activate  # On Windows, use: .\doctore-env\Scripts\activate
+pip install -r requirements.txt
