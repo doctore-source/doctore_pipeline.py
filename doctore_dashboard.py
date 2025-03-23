@@ -92,4 +92,12 @@ else:
 if st.button("🔄 Refresh Data"):
     st.experimental_rerun()
     streamlit run doctore_dashboard.py
-    
+    import requests
+
+def fetch_predictions():
+    response = requests.get("http://YOUR_SERVER_IP:5000/results")
+    if response.status_code == 200:
+        return response.json()['results']
+    else:
+        return None
+        
