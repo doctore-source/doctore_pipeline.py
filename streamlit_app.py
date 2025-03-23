@@ -1,3 +1,4 @@
+python3 doctore_api.py
 import sqlite3
 
 try:
