@@ -1,5 +1,5 @@
-def run_scheduled_pipeline():
-    """
+streamlit run doctore_dashboard.py
+
     Runs the prediction pipeline at regular intervals (e.g., every 2 hours).
     """
     schedule.every(2).hours.do(full_prediction_pipeline)
