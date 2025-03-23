@@ -1,0 +1,12 @@
+[Unit]
+Description=Doctore API Server
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/doctore_pipeline.py
+ExecStart=/usr/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 doctore_api:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
