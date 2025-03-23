@@ -3,6 +3,18 @@ import pandas as pd
 
 st.title("Doctore: NBA Betting Analysis")
 
+# Example: show a sample DataFrame
+df = pd.DataFrame({
+    "Teams": ["Team A", "Team B", "Team C"],
+    "Odds": [1.8, 2.1, 1.95]
+})
+st.write("Here are some sample odds data:")
+st.dataframe(df)
+ streamlit as st
+import pandas as pd
+
+st.title("Doctore: NBA Betting Analysis")
+
 # Example: show
 
 import pandas as pd
