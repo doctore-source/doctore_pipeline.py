@@ -37,3 +37,4 @@ python doctore_api.py
 python retrain_monitor.py
 gunicorn --workers 4 --bind 0.0.0.0:5000 doctore_api:app
 pip install -r requirements.txt
+pip install -r requirements.txt
