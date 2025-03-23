@@ -1,73 +1,70 @@
 import streamlit as st
-from retrain_monitor import generate_performance_report
-
-st.title("📊 Doctore NBA Model Performance Monitoring")
-
-if st.button("Generate Performance Report"):
-    generate_performance_report()
-    
-    with open("performance_report.pdf", "rb") as file:
-        st.download_button(
-            label="Download Performance Report",
-            data=file,
-            file_name="performance_report.pdf",
-            mime="application/pdf"
-        )import requests
 import pandas as pd
+import sqlite3
+import altair as alt
 
-def fetch_real_nba_data():
+# ------------------ Function to Load Data from Database ------------------
+
+def load_data(db_name="predictions.db"):
     """
-    Fetches live NBA game data from the SportsDataIO API (Replace with your API Key).
-    Returns a DataFrame with processed data.
+    Loads predictions from the SQLite database.
     """
-    url = "https://api.sportsdata.io/v3/nba/scores/json/GamesByDate/2025-MAR-23"
-    headers = {'Ocp-Apim-Subscription-Key': 'YOUR_SPORTSDATAIO_API_KEY'}
+    conn = sqlite3.connect(db_name)
+    query = "SELECT * FROM predictions"
+    data = pd.read_sql(query, conn)
+    conn.close()
+    return data
+
+# ------------------ Streamlit Dashboard Interface ------------------
+
+st.set_page_config(page_title="Doctore NBA Odds Calculator Dashboard", layout="wide")
+
+# Title
+st.title("📊 Doctore NBA Odds Calculator Dashboard")
+
+# Load data from the database
+df = load_data()
+
+if not df.empty:
+    # Show the raw data
+    st.subheader("🔍 Predictions Data")
+    st.write(df)
     
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        data = response.json()
-        
-        nba_data = []
-        for game in data:
-            nba_data.append({
-                "Team_A": game['HomeTeam'],
-                "Team_B": game['AwayTeam'],
-                "Team_A_Points": game['HomeTeamScore'],
-                "Team_B_Points": game['AwayTeamScore']
-            })
-        
-        return pd.DataFrame(nba_data)
-    else:
-        print(f"Failed to fetch NBA data. Status Code: {response.status_code}")
-        return pd.DataFrame()
-        def fetch_real_betting_odds():
-    """
-    Fetches live betting odds from TheOddsAPI (Replace with your API Key).
-    Returns a DataFrame with processed data.
-    """
-    url = "https://api.the-odds-api.com/v4/sports/basketball_nba/odds"
-    params = {
-        'apiKey': 'YOUR_ODDS_API_KEY',
-        'regions': 'us',
-        'markets': 'h2h',
-        'oddsFormat': 'decimal'
-    }
+    # Display Value Bets Only
+    st.subheader("💡 Value Bets")
+    value_bets = df[(df['Value_Bet_A'] == True) | (df['Value_Bet_B'] == True)]
+    st.write(value_bets)
     
-    response = requests.get(url, params=params)
-    if response.status_code == 200:
-        data = response.json()
-        
-        odds_data = []
-        for event in data:
-            odds_data.append({
-                "Team_A": event['home_team'],
-                "Team_B": event['away_team'],
-                "Bookmaker_Odds_Team_A": event['bookmakers'][0]['markets'][0]['outcomes'][0]['price'],
-                "Bookmaker_Odds_Team_B": event['bookmakers'][0]['markets'][0]['outcomes'][1]['price']
-            })
-        
-        return pd.DataFrame(odds_data)
-    else:
-        print(f"Failed to fetch odds data. Status Code: {response.status_code}")
-        return pd.DataFrame()
-        
+    # Plotting Predictions vs. Bookmaker Odds
+    st.subheader("📈 Prediction Analysis")
+    
+    chart = alt.Chart(df).mark_circle(size=60).encode(
+        x='Win_Probability',
+        y='Implied_Prob_Team_A',
+        color='Predicted_Winner:N',
+        tooltip=['Team_A', 'Team_B', 'Win_Probability', 'Implied_Prob_Team_A']
+    ).interactive()
+
+    st.altair_chart(chart, use_container_width=True)
+
+    # Performance Overview
+    st.subheader("📊 Performance Overview")
+    
+    # Plot: Value Bet Distribution
+    value_bet_chart = alt.Chart(value_bets).mark_bar().encode(
+        x='Predicted_Winner:N',
+        y='count()',
+        color='Predicted_Winner:N'
+    ).interactive()
+
+    st.altair_chart(value_bet_chart, use_container_width=True)
+
+else:
+    st.write("No predictions available. Please run the prediction pipeline first.")
+
+# ------------------ Refresh Button ------------------
+
+if st.button("🔄 Refresh Data"):
+    df = load_data()
+    st.experimental_rerun()
+    
