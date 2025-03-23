@@ -1,3 +1,5 @@
+git pull
+pip install -r requirements.txt
 changes for you.The commit with SHA f821f55c2e388dd74e3876aa94a06de311b2adca in the repository doctore-source/doctore_pipeline.py includes the following details:
 
 Author: doctore-source (jami__h@hotmail.com)
