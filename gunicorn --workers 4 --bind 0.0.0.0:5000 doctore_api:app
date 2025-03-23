@@ -1,3 +1,4 @@
+gunicorn --workers 4 --bind 0.0.0.0:5000 doctore_api:app
 from flask import Flask, request, jsonify
 import torch
 import joblib
