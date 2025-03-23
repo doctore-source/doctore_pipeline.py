@@ -181,4 +181,5 @@ def run_scheduled_pipeline():
     else:
         print(f"Failed to fetch actual results. Status Code: {response.status_code}")
         return pd.DataFrame()
+        python doctore_pipeline.py
         
