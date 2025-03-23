@@ -15,3 +15,4 @@ WantedBy=multi-user.target
 sudo systemctl enable retrain_monitor.service
 sudo systemctl start retrain_monitor.service
 sudo systemctl status retrain_monitor.service
+git clone -b doctore-source-patch-1 https://github.com/doctore-source/doctore_pipeline.py.git
