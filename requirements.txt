@@ -14,5 +14,3 @@ torch-geometric
 xgboost
 lightgbm
 catboost
-pip3 install -r requirements.txt
-
