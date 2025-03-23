@@ -20,3 +20,6 @@ google-auth-httplib2
 google-api-python-client
 google-cloud-storage
 pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client google-cloud-storage
+git add requirements.txt
+git commit -m "Add Google Cloud libraries to requirements.txt"
+git push
