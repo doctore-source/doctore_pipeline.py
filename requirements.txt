@@ -14,7 +14,4 @@ torch-geometric
 xgboost
 lightgbm
 catboost
-streamlit==1.25.0
-flask==2.2.2
-gunicorn==20.1.0
-# and so on...
+pip3 install -r requirements.txt
