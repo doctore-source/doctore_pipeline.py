@@ -15,3 +15,8 @@ torch_geometric
 xgboost
 lightgbm
 catboost
+pip install -r requirements.txt
+streamlit run streamlit_app.py
+python doctore_api.py
+python retrain_monitor.py
+gunicorn --workers 4 --bind 0.0.0.0:5000 doctore_api:app
