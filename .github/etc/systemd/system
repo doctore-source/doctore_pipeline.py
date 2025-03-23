@@ -1,15 +1,15 @@
-[Unit]
-Description=Doctore API Server
-After=network.target
-
-[Service]
-User=ubuntu
-WorkingDirectory=/home/ubuntu/doctore_pipeline.py
-ExecStart=/usr/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 doctore_api:app
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-sudo systemctl enable doctore_api.service
-sudo systemctl start doctore_api.service
-sudo systemctl status doctore_api.service
++[Unit]
++Description=Doctore API Server
++After=network.target
++
++[Service]
++User=ubuntu
++WorkingDirectory=/home/ubuntu/doctore_pipeline.py
++ExecStart=/usr/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 doctore_api:app
++Restart=always
++
++[Install]
++WantedBy=multi-user.target
++sudo systemctl enable doctore_api.service
++sudo systemctl start doctore_api.service
++sudo systemctl status doctore_api.service
