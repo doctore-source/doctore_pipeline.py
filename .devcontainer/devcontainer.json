@@ -1,6 +1,5 @@
-{sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install python3-pip -y
-pip3 install streamlit flask gunicorn fpdf requests schedule sqlite3 pandas numpy scikit-learn joblib matplotlib torch torch_geometric xgboost lightgbm catboost
+git clone -b doctore-source-patch-1 https://github.com/doctore-source/doctore_pipeline.py.git
+
 
   "name": "Python 3",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
