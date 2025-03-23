@@ -10,3 +10,6 @@ try:
     print("Tables in the database:", tables)
 except Exception as e:
     print("Error connecting to the database:", e)
+    git add .
+git commit -m "Fixed dependencies and updated requirements.txt"
+git push
