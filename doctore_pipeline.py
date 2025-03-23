@@ -1,4 +1,13 @@
-scp -i "YOUR_KEY.pem" *.py predictions.db requirements.txt ubuntu@YOUR_SERVER_IP:/home/ubuntu/
+def run_scheduled_pipeline():
+    """
+    Runs the prediction pipeline at regular intervals (e.g., every 2 hours).
+    """
+    schedule.every(2).hours.do(full_prediction_pipeline)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(60)
+        scp -i "YOUR_KEY.pem" *.py predictions.db requirements.txt ubuntu@YOUR_SERVER_IP:/home/ubuntu/
 import pandas as pd
 import numpy as np
 import requests
