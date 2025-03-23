@@ -14,3 +14,4 @@ torch-geometric
 xgboost
 lightgbm
 catboost
+pandas.read_gbq(query, credentials=credentials)
