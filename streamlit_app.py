@@ -1,13 +1,7 @@
-scp -i "YOUR_KEY.pem" *.py predictions.db requirements.txt ubuntu@YOUR_SERVER_IP:/home/ubuntu/
- streamlit as st
-import pandas as pd
+nohup streamlit run doctore_dashboard.py --server.port 8501 --server.address 0.0.0.0 > dashboard_log.out 2>&1 &
+
 
 st.title("Doctore: NBA Betting Analysis")
-
-# Example: show a sample DataFrame
-df = pd.DataFrame({
-    "Teams": ["Team A", "Team B", "Team C"],
-    "Odds": [1.8, 2.1, 1.95]
 })
 st.write("Here are some sample odds data:")
 st.dataframe(df)
