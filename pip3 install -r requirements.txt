@@ -1,0 +1,16 @@
+streamlit
+flask
+gunicorn
+fpdf
+requests
+schedule
+pandas
+numpy
+scikit-learn
+joblib
+matplotlib
+torch
+torch-geometric
+xgboost
+lightgbm
+catboost
