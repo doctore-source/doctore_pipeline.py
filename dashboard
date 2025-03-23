@@ -2,3 +2,16 @@ cd repository-name
 git checkout -b my-feature-branch
 doctore_api.py
 gunicorn --workers 4 --bind 0.0.0.0:5000 doctore_api:app
+Create /etc/systemd/system/doctore_api.service with:
+[Unit]
+Description=Doctore API Server
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu
+ExecStart=/usr/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 doctore_api:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
