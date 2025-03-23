@@ -1,2 +1,17 @@
-$ pip install -r requirements.txt
-$ streamlit run streamlit_app.py
+streamlit
+flask
+gunicorn
+fpdf
+requests
+schedule
+sqlite3
+pandas
+numpy
+scikit-learn
+joblib
+matplotlib
+torch
+torch_geometric
+xgboost
+lightgbm
+catboost
