@@ -1,2 +1,14 @@
- predictions.db
+ predictions.dB
+import sqlite3
+
+def fetch_performance_data():
+    conn = sqlite3.connect('predictions.db')
+    cursor = conn.cursor()
+    
+    cursor.execute("SELECT date, accuracy, profit FROM performance_data")
+    data = cursor.fetchall()
+    
+    conn.close()
+    return data
+
 +python3 retrain_monitor.py
