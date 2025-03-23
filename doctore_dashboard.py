@@ -100,4 +100,5 @@ def fetch_predictions():
         return response.json()['results']
     else:
         return None
+        tail -f doctore_api.log
         
