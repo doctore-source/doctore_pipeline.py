@@ -1,4 +1,29 @@
 streamlit run doctore_dashboard.py
+from sklearn.ensemble import VotingClassifier
+
+def create_ensemble_model(X_train, y_train):
+    """
+    Creates an ensemble model combining XGBoost, LightGBM, and CatBoost.
+    """
+    xgb_model = tune_model(X_train, y_train, 'xgboost')
+    lgbm_model = tune_model(X_train, y_train, 'lightgbm')
+    catboost_model = tune_model(X_train, y_train, 'catboost')
+
+    ensemble_model = VotingClassifier(
+        estimators=[
+            ('xgboost', xgb_model),
+            ('lightgbm', lgbm_model),
+            ('catboost', catboost_model)
+        ],
+        voting='soft'
+    )
+    
+    ensemble_model.fit(X_train, y_train)
+    return ensemble_model
+import joblib
+joblib.dump(ensemble_model, 'enhanced_model.pkl')
+loaded_model = joblib.load('enhanced_model.pkl')
+
 
     Runs the prediction pipeline at regular intervals (e.g., every 2 hours).
     """
