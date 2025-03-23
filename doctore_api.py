@@ -1,3 +1,4 @@
+http://127.0.0.1:5000/predict.
 from flask import Flask, request, jsonify
 import joblib
 import os
