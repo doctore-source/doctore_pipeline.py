@@ -1,9 +1,6 @@
-streamlit
 flask
 gunicorn
-fpdf
-requests
-schedule
+streamlit
 pandas
 numpy
 scikit-learn
@@ -14,5 +11,11 @@ torch-geometric
 xgboost
 lightgbm
 catboost
-pip3 install -r requirements.txt
-
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client
+google-cloud-storage
+fpdf
+requests
+schedule
