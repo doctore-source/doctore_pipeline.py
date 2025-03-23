@@ -1,4 +1,5 @@
-cd repository-name
+streamlit_app.py
+
 git checkout -b my-feature-branch
 doctore_api.py
 gunicorn --workers 4 --bind 0.0.0.0:5000 doctore_api:app
